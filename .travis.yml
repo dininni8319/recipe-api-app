@@ -1,0 +1,12 @@
+language: python
+python: 
+  - "3.6"
+  #We will let know docker what services we are using
+services: 
+  - docker
+
+#now we are specifiang a script to run before before trevis execute any automated command
+before_script: pip install docker-compose
+#trevis will run our app and if fails, it will send us an email
+script:
+  - docker-compose run app sh -c "python manage.py test && flake8"
