@@ -7,11 +7,22 @@ class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields): # what it does, the last field, basecly takes any extra function passed into the create_user and  add them into the **extra_fields
         """Create and save a new user"""
-        user = self.model(email=email, **extra_fields) #is going to pass the email first and then the extra things that we add
+        if not email:
+            raise ValueError('Users must have an email address')
+        user = self.model(email=self.normalize_email(email), **extra_fields) #is going to pass the email first and then the extra things that we add
         user.set_password(password) # what it does it encript the password
         user.save(using=self._db)
 
-        return user 
+        return user
+
+    def create_superuser(self, email, password):
+        """Creates and saves a new super user"""
+        user = self.create_user(email, password) 
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
 #AbstractBaseUser, PermissionsMixin are features that come auto of the box with django usermodel and with can customize 
     # user bye default are active but not staff
 class User(AbstractBaseUser, PermissionsMixin):
