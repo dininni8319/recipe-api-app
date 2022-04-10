@@ -13,4 +13,19 @@ services:
         #make sure that you have one indent before you add a command
         command: > 
           sh -c "python manage.py runserver 0.0.0.0:8000"
+        environment: 
+          - DB_HOST=db
+          - DB_NAME=app
+          - DB_USER=postgres
+          - DB_PASS=supersecretpassword
+        depends_on: 
+          - db 
         
+    db:   #new service, this is the image that locate the we will pull from dockerhub
+       image: postgres:10-alpine
+       #list of envirement variables
+       environment: 
+        - POSTGRES_DB=app
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=supersecretpassword  #you wouldn't use the same password for the prod.
+
