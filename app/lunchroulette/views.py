@@ -7,15 +7,28 @@ from rest_framework import status
 
 #the views files contains the necessery logic for the API
 class LunchEventAPIView(GenericAPIView):
-    """Create a new Event into the db"""
+
+    def get(self, request, *args, **kwargs):
+        """Get all lunch events planned for the week"""
+        
+        lunch_event = LunchGroup.objects.all()
+
+        if request.method == 'GET':
+            lunch_serializer = LunchGroupSerializer(lunch_event, many=True)
+            return Response({"data":lunch_serializer.data, "status": 'success'}, status=status.HTTP_201_CREATED)
+            
+        else: return Response(lunch_event.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
+        """Create a new Event into the db"""
+        
         if request.method=="POST":
             serializer_class = LunchGroupSerializer(data=request.data)
             if serializer_class.is_valid():
-               
                 serializer_class.save()
                 return Response(serializer_class.data, status=status.HTTP_201_CREATED)
             
             return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
                 

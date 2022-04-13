@@ -3,4 +3,5 @@ from .views import LunchEventAPIView
 
 urlpatterns = [
     path('', LunchEventAPIView.as_view()),
+    path('', LunchEventAPIView.as_view()),
 ]
