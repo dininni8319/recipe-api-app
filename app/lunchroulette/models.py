@@ -1,8 +1,8 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
+
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-User = get_user_model()
 
 class LunchGroup(models.Model):
 
@@ -28,16 +28,17 @@ class LunchGroup(models.Model):
         verbose_name='update',
     )
 
-    # admin = models.OneToOneField(
-    #     to=User,
-    #     on_delete=models.CASCADE,
-    #     verbose_name='user',
-    # )
+    admin = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='admin_id',
+        null=True
+    )
 
     number_people = models.IntegerField(
         default=1,
         validators=[
-           MaxValueValidator(50),
+           MaxValueValidator(8),
            MinValueValidator(1) 
         ],
         blank=True
@@ -50,8 +51,8 @@ class LunchGroup(models.Model):
         name_event = f'{self.name_event[:30]}...' if len(self.name_event) > 30 else self.name_event
         return f' {self.pk}: {name_event}'
 
-# class EventPartecipats(models.Model):
-#     name = models.CharField(
-#         max_length=100,
-#         blank=True
-#     )
+class EventPartecipats(models.Model):
+    name = models.CharField(
+        max_length=100,
+        blank=True
+    )
