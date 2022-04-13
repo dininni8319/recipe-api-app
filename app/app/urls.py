@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('user.urls')), #help function that helps to defines the urls as string
+    path('api/lunchroulette/', include('lunchroulette.urls'))
 ]
