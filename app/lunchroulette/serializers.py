@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import LunchGroup, Partecipats, ListPlaces
+from .models import LunchGroup, Partecipat, ListPlace
 
 class LunchGroupSerializer(serializers.ModelSerializer):
     admin = get_user_model()
@@ -11,10 +11,10 @@ class LunchGroupSerializer(serializers.ModelSerializer):
 
 class ParticipantsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Partecipats
-        fields = ['name']
+        model = Partecipat
+        fields = ['name_partecipant']
 
 class ListPlacesSerializer(serializers.ModelSerializer):
     class Meta: 
-        model = ListPlaces
+        model = ListPlace
         fields = ['restaurant_name']

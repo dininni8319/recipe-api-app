@@ -1,7 +1,7 @@
 
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from .serializers import LunchGroupSerializer, ListPlacesSerializer, ParticipantsSerializer
-from .models import LunchGroup
+from .models import LunchGroup, ListPlace, Partecipat
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -38,7 +38,24 @@ class LunchEventAPIView(GenericAPIView):
 
 
 class ListPlacesAPIView(GenericAPIView):  
-    """Add a place to the list where we could have lunch"""   
+    """Add a place to the list where we could have lunch""" 
+    def get(self, request, id=None):
+        """Get the list of all the partecipants"""
+        
+        list_places = ListPlace.objects.all()
+
+        if request.method == 'GET':
+            if id:
+                list_places = ListPlace.objects.get(id=id)
+                list_serializer = ListPlacesSerializer(list_places)
+                return Response({"data":list_serializer.data, "status": 'success'}, status=status.HTTP_201_CREATED)
+            
+            list_serializer = ListPlacesSerializer(list_places,  many=True)
+
+            return Response({"data":list_serializer.data, "status": 'success'}, status=status.HTTP_201_CREATED)
+        
+        return Response(list_places.errors, status=status.HTTP_400_BAD_REQUEST)
+          
     def post(self, request, *args, **kwargs):
         if request.method == "POST":
             serializer_class = ListPlacesSerializer(data=request.data)
@@ -50,6 +67,24 @@ class ListPlacesAPIView(GenericAPIView):
 
 
 class ParticipantsAPIView(GenericAPIView):
+
+    def get(self, request, id=None):
+        """Get the list of all the partecipants"""
+        
+        list_partecipants = Partecipat.objects.all()
+
+        if request.method == 'GET':
+            if id:
+                list_partecipants = Partecipat.objects.get(id=id)
+                partecipants_serializer = ParticipantsSerializer(list_partecipants)
+                return Response({"data":partecipants_serializer.data, "status": 'success'}, status=status.HTTP_201_CREATED)
+            
+            partecipants_serializer = ParticipantsSerializer(list_partecipants,  many=True)
+
+            return Response({"data":partecipants_serializer.data, "status": 'success'}, status=status.HTTP_201_CREATED)
+        
+        return Response(list_partecipants.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def post(self, request, *args, **kwargs):
         if request.method == "POST":
             serializer_class = ParticipantsSerializer(data=request.data)

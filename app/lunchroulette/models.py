@@ -48,16 +48,16 @@ class LunchGroup(models.Model):
         name_event = f'{self.name_event[:30]}...' if len(self.name_event) > 30 else self.name_event
         return f' {self.pk}: {name_event}'
 
-class Partecipats(models.Model):
-    name = models.CharField(
-        verbose_name='name',
+class Partecipat(models.Model):
+    name_partecipant = models.CharField(
+        verbose_name='name_partecipant',
         max_length=100,
     )
 
-class ListPlaces(models.Model):
+class ListPlace(models.Model):
     restaurant_name = models.CharField(
         verbose_name='restaurant_name',
         max_length=100,
     )
     def __str__(self):
-        return f'Ingredient id {self.pk}: {self.restaurant_name}'
+        return f'Restaurant name: {self.restaurant_name}'

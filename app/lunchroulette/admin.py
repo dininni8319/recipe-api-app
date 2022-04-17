@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import LunchGroup, Partecipats, ListPlaces
+from .models import LunchGroup, Partecipat, ListPlace
 
 admin.site.register(LunchGroup)
-admin.site.register(Partecipats)
-admin.site.register(ListPlaces)
+admin.site.register(Partecipat)
+admin.site.register(ListPlace)
