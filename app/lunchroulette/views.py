@@ -1,6 +1,6 @@
 
-from rest_framework.generics import GenericAPIView
-from .serializers import LunchGroupSerializer, EventParticipantsSerializer, ListPlacesSerializer
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from .serializers import LunchGroupSerializer, ListPlacesSerializer, ParticipantsSerializer
 from .models import LunchGroup
 from rest_framework.response import Response
 from rest_framework import status
@@ -46,7 +46,17 @@ class ListPlacesAPIView(GenericAPIView):
                 serializer_class.save()
                 return Response(serializer_class.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
-        """Create a list of places where the team could have a lunch"""
+            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
-                
+
+class ParticipantsAPIView(GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        if request.method == "POST":
+            serializer_class = ParticipantsSerializer(data=request.data)
+            if serializer_class.is_valid():
+                serializer_class.save()
+                return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+        
+            return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
