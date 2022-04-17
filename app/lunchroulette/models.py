@@ -43,9 +43,6 @@ class LunchGroup(models.Model):
         ],
         blank=True
     )
-
-    # class Meta: 
-    #     db_table="lunchroulette"
         
     def __str__(self):
         name_event = f'{self.name_event[:30]}...' if len(self.name_event) > 30 else self.name_event
@@ -53,6 +50,12 @@ class LunchGroup(models.Model):
 
 class EventPartecipats(models.Model):
     name = models.CharField(
+        verbose_name='name',
         max_length=100,
-        blank=True
+    )
+
+class ListPlaces(models.Model):
+    restaurant_name = models.CharField(
+        verbose_name='restaurant_name',
+        max_length=100,
     )
