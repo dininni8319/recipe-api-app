@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -43,7 +42,13 @@ class LunchGroup(models.Model):
         ],
         blank=True
     )
-        
+
+    week_day = models.CharField(
+        verbose_name='week_day',
+        max_length=100, 
+        blank=True
+    ) 
+
     def __str__(self):
         name_event = f'{self.name_event[:30]}...' if len(self.name_event) > 30 else self.name_event
         return f' {self.pk}: {name_event}'

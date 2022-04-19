@@ -7,7 +7,7 @@ class LunchGroupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = LunchGroup
-        fields = ['name_event', 'description', 'created', 'update', 'number_people']
+        fields = ['name_event', 'description', 'created', 'update', 'number_people', 'week_day']
 
 class ParticipantsSerializer(serializers.ModelSerializer):
     class Meta:
