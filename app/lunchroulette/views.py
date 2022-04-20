@@ -1,6 +1,7 @@
 import random
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
-from .serializers import LunchGroupSerializer, ListPlacesSerializer, ParticipantsSerializer
+from .serializers import LunchGroupSerializer, ListPlacesSerializer, ParticipantsSerializer 
+
 from .models import LunchGroup, ListPlace, Partecipat
 from rest_framework.response import Response
 from rest_framework import status
@@ -95,8 +96,7 @@ class ParticipantsAPIView(GenericAPIView):
         
             return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class RandomUserAPIView(GenericAPIView):
+class RandomUserAPIView(ListCreateAPIView):
     
     def get(self, request):
         random_partecipants = Partecipat.objects.all().order_by('?')[:8]
@@ -110,17 +110,17 @@ class RandomUserAPIView(GenericAPIView):
     def post(self, request):
         """Get all the random places and random participant"""
         random_partecipants = Partecipat.objects.all().order_by('?')[:8]
-        random_placeses = ListPlace.objects.all().order_by('?')[:8]
+        random_place = ListPlace.objects.all().order_by('?')[:1]
+        random_place = random_place[0]
         week_day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-        kwargs = {**request.POST, "week_day": 'Monday'} 
-        serialized_data = LunchGroupSerializer(**kwargs)
-        if request.method == 'GET':
-            random_partecipants_serializer = ParticipantsSerializer(random_partecipants, many=True)
-            random_placeses_serializer = ListPlacesSerializer(random_placeses, many=True)
-            
-            return Response({"data":random_partecipants_serializer.data,'places_random': random_placeses_serializer.data, "status": "success"}, status=status.HTTP_201_CREATED)
-        if request.method == 'POST':
-            return Response({"data":serialized_data, "status": 'success'}, status=status.HTTP_201_CREATED)
 
-        return Response(serialized_data.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+        if request.method =="POST":
+            LunchGroup.objects.create(
+                name_event = request.POST['name_event'],
+                description = request.POST['description'],
+                week_day = week_day[0],
+                random_place = random_place
+            )
+        
+            return Response({"data": 'ok' , "status": 'success'}) 
+

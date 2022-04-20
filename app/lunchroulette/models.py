@@ -1,6 +1,9 @@
 from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.forms import CharField
+# from django.forms import JSONField
 
 
 class LunchGroup(models.Model):
@@ -49,6 +52,16 @@ class LunchGroup(models.Model):
         blank=True
     ) 
 
+    random_partecipants = JSONField(
+        verbose_name='random_partecipants',
+        null=True
+    )
+    random_place = models.CharField(
+        verbose_name='random_place',
+        null=True,
+        max_length=200
+    )
+
     def __str__(self):
         name_event = f'{self.name_event[:30]}...' if len(self.name_event) > 30 else self.name_event
         return f' {self.pk}: {name_event}'
@@ -65,4 +78,4 @@ class ListPlace(models.Model):
         max_length=100,
     )
     def __str__(self):
-        return f'Restaurant name: {self.restaurant_name}'
+        return f'{self.restaurant_name}'
